@@ -1,15 +1,17 @@
 #include <stdio.h>
+#include <dirent.h>
 #include <stdlib.h>
-int main()
-{
-    FILE *fh;
-    fh = fopen("Praktikum_IX.txt", "w");
-    if (fh == NULL)
-    {
-        puts("Can't open that file!");
-        exit(1);
+int main(int argc, char **argv) {
+    if (argc == 1) {
+        printf("Usage: %s [directory]\n", *argv);
+        exit(0);
     }
-    fprintf(fh, "Look what I made!n");
-    fclose(fh);
-    return (0);
+    struct dirent *dp;
+    DIR *dirp = opendir(argv[1]);
+    while ((dp = readdir(dirp)) != NULL) {
+        printf("%s %lu\n", dp->d_name, (unsigned long)dp->d_ino);
+    }
+
+    closedir(dirp);
+    return 0;
 }
